@@ -51,6 +51,8 @@ export function AgentSessionView_01({
   const session = useSessionContext();
   const { messages } = useSessionMessages(session);
   const { state: agentState } = useAgent();
+  void supportsVideoInput;
+  void supportsScreenShare;
 
   const controls: AgentControlBarControls = {
     leave: true,
@@ -76,7 +78,7 @@ export function AgentSessionView_01({
         <div className="flex h-[calc(100svh-2.5rem)] max-h-[920px] w-full max-w-4xl flex-col overflow-hidden rounded-[2rem] border border-[#dcdfff] bg-white/88 shadow-[0_32px_110px_rgba(76,61,176,0.16)] backdrop-blur">
           <div className="flex items-center justify-between gap-4 border-b border-[#ebe8ff] px-5 py-4 md:px-6">
             <div className="min-w-0">
-              <p className="text-xs font-semibold tracking-[0.24em] uppercase text-[#8e88b7]">
+              <p className="text-xs font-semibold tracking-[0.24em] text-[#8e88b7] uppercase">
                 Live Property Chat
               </p>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[#261f58] md:text-3xl">
@@ -109,7 +111,7 @@ export function AgentSessionView_01({
             </div>
           )}
 
-          <div className="flex min-h-0 flex-1 flex-col px-3 pb-3 pt-3 md:px-4 md:pb-4">
+          <div className="flex min-h-0 flex-1 flex-col px-3 pt-3 pb-3 md:px-4 md:pb-4">
             <div className="min-h-0 flex-1 overflow-hidden rounded-[1.5rem] border border-[#ebe8ff] bg-[linear-gradient(180deg,#fdfcff_0%,#f7f4ff_100%)]">
               <AgentChatTranscript
                 agentState={agentState}

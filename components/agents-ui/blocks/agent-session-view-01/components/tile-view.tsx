@@ -40,7 +40,8 @@ export function TileLayout({ audioVisualizerColor }: TileLayoutProps) {
   const [screenShareTrack] = useTracks([Track.Source.ScreenShare]);
   const cameraTrack: TrackReference | undefined = useLocalTrackRef(Track.Source.Camera);
 
-  const previewTrack = cameraTrack && !cameraTrack.publication.isMuted ? cameraTrack : screenShareTrack;
+  const previewTrack =
+    cameraTrack && !cameraTrack.publication.isMuted ? cameraTrack : screenShareTrack;
   const assistantColor = audioVisualizerColor ?? '#5f52f6';
   const assistantWidth = agentVideoTrack?.publication.dimensions?.width ?? 0;
   const assistantHeight = agentVideoTrack?.publication.dimensions?.height ?? 0;

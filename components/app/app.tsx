@@ -15,10 +15,36 @@ import { getSandboxTokenSource } from '@/lib/utils';
 
 const IN_DEVELOPMENT = process.env.NODE_ENV !== 'production';
 
+function getRoomSid(room: object): string {
+  if ('sid' in room && typeof room.sid === 'string') {
+    return room.sid;
+  }
+
+  return '';
+}
+
+function createQueryString(urlParams?: { [key: string]: string | string[] | undefined }) {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(urlParams ?? {}).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((item) => searchParams.append(key, item));
+      return;
+    }
+
+    if (typeof value === 'string') {
+      searchParams.append(key, value);
+    }
+  });
+
+  const queryString = searchParams.toString();
+  return queryString ? `?${queryString}` : '';
+}
+
 function AppSetup() {
   useDebugMode({ enabled: IN_DEVELOPMENT });
   useAgentErrors();
-  
+
   const room = useRoomContext();
   const localParticipant = useLocalParticipant();
 
@@ -26,15 +52,15 @@ function AppSetup() {
     if (room.state === 'connected' && localParticipant.localParticipant) {
       const connectionData = {
         room: room.name || '',
-        roomID: (room as any).sid || '',
+        roomID: getRoomSid(room),
         participant: localParticipant.localParticipant.name || '',
         pID: localParticipant.localParticipant.identity || '',
         metadata: localParticipant.localParticipant.metadata || '',
       };
-      
+
       console.log('=== Connection Details (Ready for Agent) ===');
       console.log(connectionData);
-      
+
       // Parse and show metadata if available
       if (connectionData.metadata) {
         try {
@@ -42,7 +68,7 @@ function AppSetup() {
           console.log('=== URL Parameters for Agent ===');
           console.log(parsedMetadata);
           console.log('================================');
-        } catch (e) {
+        } catch {
           console.log('Metadata:', connectionData.metadata);
         }
       }
@@ -64,20 +90,18 @@ export function App({ appConfig, urlParams }: AppProps) {
     console.log('URL Params:', urlParams);
     console.log('Sandbox Endpoint:', process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT);
     console.log('============================');
-    
+
     if (typeof process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT === 'string') {
       console.log('Using SANDBOX token source with URL params');
       return getSandboxTokenSource(appConfig, urlParams);
     }
-    
+
     // Create custom token source that sends URL params to backend
-    const queryString = urlParams 
-      ? '?' + new URLSearchParams(urlParams as Record<string, string>).toString() 
-      : '';
-    
+    const queryString = createQueryString(urlParams);
+
     const endpoint = `/api/token${queryString}`;
     console.log('Using LOCAL /api/token endpoint:', endpoint);
-    
+
     return TokenSource.endpoint(endpoint);
   }, [appConfig, urlParams]);
 

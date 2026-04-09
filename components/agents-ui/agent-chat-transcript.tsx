@@ -78,9 +78,7 @@ export function AgentChatTranscript({
           );
         })}
         <AnimatePresence>
-          {agentState === 'thinking' && (
-            <AgentChatIndicator size="sm" className="bg-[#5f52f6]" />
-          )}
+          {agentState === 'thinking' && <AgentChatIndicator size="sm" className="bg-[#5f52f6]" />}
         </AnimatePresence>
       </ConversationContent>
       <ConversationScrollButton className="border-[#d9dcff] bg-white text-[#4d42cf] shadow-[0_10px_30px_rgba(76,61,176,0.12)] hover:bg-[#f4f3ff]" />

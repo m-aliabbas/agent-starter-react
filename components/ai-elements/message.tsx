@@ -1,7 +1,8 @@
 'use client';
 
 import type { ComponentProps, HTMLAttributes, ReactElement } from 'react';
-import { createContext, memo, useContext, useEffect, useState } from 'react';
+import { createContext, memo, useContext, useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
 import type { FileUIPart, UIMessage } from 'ai';
 import { ChevronLeftIcon, ChevronRightIcon, PaperclipIcon, XIcon } from 'lucide-react';
 import { Streamdown } from 'streamdown';
@@ -155,7 +156,10 @@ export type MessageBranchContentProps = HTMLAttributes<HTMLDivElement>;
 
 export const MessageBranchContent = ({ children, ...props }: MessageBranchContentProps) => {
   const { currentBranch, setBranches, branches } = useMessageBranch();
-  const childrenArray = Array.isArray(children) ? children : [children];
+  const childrenArray = useMemo(
+    () => (Array.isArray(children) ? children : [children]),
+    [children]
+  );
 
   // Use useEffect to update branches when they change
   useEffect(() => {
@@ -188,6 +192,7 @@ export const MessageBranchSelector = ({
   ...props
 }: MessageBranchSelectorProps) => {
   const { totalBranches } = useMessageBranch();
+  void from;
 
   // Don't render if there's only one branch
   if (totalBranches <= 1) {
@@ -196,7 +201,10 @@ export const MessageBranchSelector = ({
 
   return (
     <ButtonGroup
-      className="[&>*:not(:first-child)]:rounded-l-md [&>*:not(:last-child)]:rounded-r-md"
+      className={cn(
+        '[&>*:not(:first-child)]:rounded-l-md [&>*:not(:last-child)]:rounded-r-md',
+        className
+      )}
       orientation="horizontal"
       {...props}
     />
@@ -231,6 +239,7 @@ export const MessageBranchNext = ({ children, className, ...props }: MessageBran
   return (
     <Button
       aria-label="Next branch"
+      className={className}
       disabled={totalBranches <= 1}
       onClick={goToNext}
       size="icon-sm"
@@ -288,7 +297,7 @@ export function MessageAttachment({ data, className, onRemove, ...props }: Messa
     <div className={cn('group relative size-24 overflow-hidden rounded-lg', className)} {...props}>
       {isImage ? (
         <>
-          <img
+          <Image
             alt={filename || 'attachment'}
             className="size-full object-cover"
             height={100}

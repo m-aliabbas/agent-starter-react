@@ -40,7 +40,7 @@ export const WelcomeView = ({
         <section className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(135deg,#5f52f6_0%,#4338ca_45%,#35289f_100%)] px-6 py-16 text-center text-white shadow-[0_30px_100px_rgba(79,70,229,0.35)] md:px-12 md:py-24">
           <div className="absolute inset-x-0 bottom-0 h-20 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.55),rgba(255,255,255,0)_70%)] blur-2xl" />
           <div className="relative mx-auto max-w-3xl">
-            <span className="mb-5 inline-flex rounded-full border border-white/20 bg-white/12 px-4 py-1 text-xs font-semibold tracking-[0.24em] uppercase text-white/80">
+            <span className="mb-5 inline-flex rounded-full border border-white/20 bg-white/12 px-4 py-1 text-xs font-semibold tracking-[0.24em] text-white/80 uppercase">
               Property Advisor
             </span>
             <h1 className="text-4xl leading-none font-semibold tracking-tight text-balance md:text-6xl">
@@ -48,8 +48,8 @@ export const WelcomeView = ({
               <span className="mt-2 block text-[#96f0c3]">UK Property Advisor</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/82 md:text-lg">
-              Whether you&apos;re renting your first flat or weighing up a home purchase, chat
-              with your assistant and get clearer next steps without leaving the page.
+              Whether you&apos;re renting your first flat or weighing up a home purchase, chat with
+              your assistant and get clearer next steps without leaving the page.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button

@@ -2,12 +2,18 @@ import { NextResponse } from 'next/server';
 import { AccessToken, type AccessTokenOptions, type VideoGrant } from 'livekit-server-sdk';
 import { RoomConfiguration } from '@livekit/protocol';
 
+type RoomConfigurationJson = Parameters<typeof RoomConfiguration.fromJson>[0];
+
 type ConnectionDetails = {
   serverUrl: string;
   roomName: string;
   participantName: string;
   participantToken: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
+};
+
+type TokenRequestBody = {
+  room_config?: RoomConfigurationJson;
 };
 
 // NOTE: you are expected to define the following environment variables in `.env.local`:
@@ -22,11 +28,11 @@ export async function GET(req: Request) {
   // Extract and log URL parameters
   const url = new URL(req.url);
   const params = Object.fromEntries(url.searchParams);
-  
+
   console.log('=== URL Parameters ===');
   console.log(params);
   console.log('======================');
-  
+
   return NextResponse.json({
     message: 'URL Parameters received',
     parameters: params,
@@ -38,7 +44,7 @@ export async function POST(req: Request) {
   console.log('===================================');
   console.log('🔵 POST /api/token called');
   console.log('===================================');
-  
+
   if (process.env.NODE_ENV !== 'development') {
     throw new Error(
       'THIS API ROUTE IS INSECURE. DO NOT USE THIS ROUTE IN PRODUCTION WITHOUT AN AUTHENTICATION LAYER.'
@@ -64,9 +70,9 @@ export async function POST(req: Request) {
     }
 
     // Parse room config from request body.
-    const body = await req.json();
+    const body = (await req.json()) as TokenRequestBody;
     // Recreate the RoomConfiguration object from JSON object.
-    const roomConfig = body?.room_config 
+    const roomConfig = body?.room_config
       ? RoomConfiguration.fromJson(body.room_config, { ignoreUnknownFields: true })
       : undefined;
 
@@ -95,7 +101,7 @@ export async function POST(req: Request) {
       participantToken,
       metadata: params,
     };
-    
+
     console.log('=== Response Data ===');
     console.log(data);
     console.log('=====================');

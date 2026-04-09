@@ -15,7 +15,7 @@ export default async function Page({
   console.log('=== Page URL Parameters ===');
   console.log(params);
   console.log('===========================');
-  
+
   // Example: http://localhost:3000?agent_name=ali (don't use quotes in URL);
 
   return <App appConfig={appConfig} urlParams={params} />;
