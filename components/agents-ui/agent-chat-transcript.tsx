@@ -7,6 +7,7 @@ import { AgentChatIndicator } from '@/components/agents-ui/agent-chat-indicator'
 import {
   Conversation,
   ConversationContent,
+  ConversationEmptyState,
   ConversationScrollButton,
 } from '@/components/ai-elements/conversation';
 import { Message, MessageContent, MessageResponse } from '@/components/ai-elements/message';
@@ -54,6 +55,13 @@ export function AgentChatTranscript({
   return (
     <Conversation className={className} {...props}>
       <ConversationContent>
+        {messages.length === 0 && agentState !== 'thinking' && (
+          <ConversationEmptyState
+            title="Start with a property question"
+            description="Try asking about rent, deposits, mortgages, offers, or comparing two places."
+            className="items-start justify-center px-2 text-left md:px-4"
+          />
+        )}
         {messages.map((receivedMessage) => {
           const { id, timestamp, from, message } = receivedMessage;
           const locale = navigator?.language ?? 'en-US';
@@ -70,10 +78,12 @@ export function AgentChatTranscript({
           );
         })}
         <AnimatePresence>
-          {agentState === 'thinking' && <AgentChatIndicator size="sm" />}
+          {agentState === 'thinking' && (
+            <AgentChatIndicator size="sm" className="bg-[#5f52f6]" />
+          )}
         </AnimatePresence>
       </ConversationContent>
-      <ConversationScrollButton />
+      <ConversationScrollButton className="border-[#d9dcff] bg-white text-[#4d42cf] shadow-[0_10px_30px_rgba(76,61,176,0.12)] hover:bg-[#f4f3ff]" />
     </Conversation>
   );
 }

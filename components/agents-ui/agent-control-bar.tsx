@@ -21,24 +21,22 @@ import {
 import { cn } from '@/lib/shadcn/utils';
 
 const LK_TOGGLE_VARIANT_1 = [
-  'data-[state=off]:bg-accent data-[state=off]:hover:bg-foreground/10',
-  'data-[state=off]:[&_~_button]:bg-accent data-[state=off]:[&_~_button]:hover:bg-foreground/10',
-  'data-[state=off]:border-border data-[state=off]:hover:border-foreground/12',
-  'data-[state=off]:[&_~_button]:border-border data-[state=off]:[&_~_button]:hover:border-foreground/12',
-  'data-[state=off]:text-destructive data-[state=off]:hover:text-destructive data-[state=off]:focus:text-destructive',
-  'data-[state=off]:focus-visible:ring-foreground/12 data-[state=off]:focus-visible:border-ring',
-  'dark:data-[state=off]:[&_~_button]:bg-accent dark:data-[state=off]:[&_~_button]:hover:bg-foreground/10',
+  'data-[state=off]:bg-[#fff1f3] data-[state=off]:hover:bg-[#ffe6eb]',
+  'data-[state=off]:[&_~_button]:bg-[#fff1f3] data-[state=off]:[&_~_button]:hover:bg-[#ffe6eb]',
+  'data-[state=off]:border-[#ffd7df] data-[state=off]:hover:border-[#ffc4cf]',
+  'data-[state=off]:[&_~_button]:border-[#ffd7df] data-[state=off]:[&_~_button]:hover:border-[#ffc4cf]',
+  'data-[state=off]:text-[#ff7d8c] data-[state=off]:hover:text-[#ff6d7f] data-[state=off]:focus:text-[#ff6d7f]',
+  'data-[state=off]:focus-visible:ring-[#e0dfff] data-[state=off]:focus-visible:border-[#cfd4ff]',
 ];
 
 const LK_TOGGLE_VARIANT_2 = [
-  'data-[state=off]:bg-accent data-[state=off]:hover:bg-foreground/10',
-  'data-[state=off]:border-border data-[state=off]:hover:border-foreground/12',
-  'data-[state=off]:focus-visible:border-ring data-[state=off]:focus-visible:ring-foreground/12',
-  'data-[state=off]:text-foreground data-[state=off]:hover:text-foreground data-[state=off]:focus:text-foreground',
-  'data-[state=on]:bg-blue-500/20 data-[state=on]:hover:bg-blue-500/30',
-  'data-[state=on]:border-blue-700/10 data-[state=on]:text-blue-700 data-[state=on]:ring-blue-700/30',
-  'data-[state=on]:focus-visible:border-blue-700/50',
-  'dark:data-[state=on]:bg-blue-500/20 dark:data-[state=on]:text-blue-300',
+  'data-[state=off]:bg-[#f5f4ff] data-[state=off]:hover:bg-[#ece9ff]',
+  'data-[state=off]:border-[#dddfff] data-[state=off]:hover:border-[#cfd4ff]',
+  'data-[state=off]:focus-visible:border-[#cfd4ff] data-[state=off]:focus-visible:ring-[#e0dfff]',
+  'data-[state=off]:text-[#635a94] data-[state=off]:hover:text-[#4d42cf] data-[state=off]:focus:text-[#4d42cf]',
+  'data-[state=on]:bg-[#dff7ea] data-[state=on]:hover:bg-[#d2f2e2]',
+  'data-[state=on]:border-[#bceacf] data-[state=on]:text-[#2b8d68] data-[state=on]:ring-[#bceacf]',
+  'data-[state=on]:focus-visible:border-[#8fdab5]',
 ];
 
 const MOTION_PROPS: MotionProps = {
@@ -117,7 +115,7 @@ function AgentChatInput({ chatOpen, onSend = async () => {}, className }: AgentC
         placeholder="Type something..."
         onKeyDown={handleKeyDown}
         onChange={(e) => setMessage(e.target.value)}
-        className="field-sizing-content max-h-16 min-h-8 flex-1 resize-none py-2 [scrollbar-width:thin] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="field-sizing-content max-h-16 min-h-8 flex-1 resize-none py-2 text-[#2f275f] placeholder:text-[#b6b3cf] [scrollbar-width:thin] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       />
       <Button
         size="icon"
@@ -126,7 +124,7 @@ function AgentChatInput({ chatOpen, onSend = async () => {}, className }: AgentC
         variant={isDisabled ? 'secondary' : 'default'}
         title={isSending ? 'Sending...' : 'Send'}
         onClick={handleButtonClick}
-        className="self-end disabled:cursor-not-allowed"
+        className="self-end rounded-full bg-[#5f52f6] text-white hover:bg-[#4d42cf] disabled:cursor-not-allowed disabled:bg-[#c9c7d8] disabled:text-white"
       >
         {isSending ? <Loader className="animate-spin" /> : <SendHorizontal />}
       </Button>
@@ -288,7 +286,7 @@ export function AgentControlBar({
     <div
       aria-label="Voice assistant controls"
       className={cn(
-        'bg-background border-input/50 dark:border-muted flex flex-col border p-3 drop-shadow-md/3',
+        'flex flex-col border border-[#cfd4ff] bg-white/92 p-3 text-[#2f275f] drop-shadow-md/3 backdrop-blur',
         variant === 'livekit' ? 'rounded-[31px]' : 'rounded-lg',
         className
       )}
@@ -298,7 +296,7 @@ export function AgentControlBar({
         {...MOTION_PROPS}
         inert={!(isChatOpen || isChatOpenUncontrolled)}
         animate={isChatOpen || isChatOpenUncontrolled ? 'visible' : 'hidden'}
-        className="border-input/50 flex w-full items-start overflow-hidden border-b"
+        className="flex w-full items-start overflow-hidden border-b border-[#e6e3ff]"
       >
         <AgentChatInput
           chatOpen={isChatOpen || isChatOpenUncontrolled}
@@ -393,7 +391,7 @@ export function AgentControlBar({
             disabled={!isConnected}
             className={cn(
               variant === 'livekit' &&
-                'bg-destructive/10 dark:bg-destructive/10 text-destructive hover:bg-destructive/20 dark:hover:bg-destructive/20 focus:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/4 rounded-full font-mono text-xs font-bold tracking-wider'
+                'rounded-full bg-[#fff3f4] font-mono text-xs font-bold tracking-wider text-[#ff7d8c] hover:bg-[#ffe7eb] focus:bg-[#ffe7eb] focus-visible:ring-[#ffd7df]'
             )}
           >
             <span className="hidden md:inline">END CALL</span>

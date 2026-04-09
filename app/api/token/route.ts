@@ -7,6 +7,7 @@ type ConnectionDetails = {
   roomName: string;
   participantName: string;
   participantToken: string;
+  metadata?: Record<string, any>;
 };
 
 // NOTE: you are expected to define the following environment variables in `.env.local`:
@@ -17,7 +18,27 @@ const LIVEKIT_URL = process.env.LIVEKIT_URL;
 // don't cache the results
 export const revalidate = 0;
 
+export async function GET(req: Request) {
+  // Extract and log URL parameters
+  const url = new URL(req.url);
+  const params = Object.fromEntries(url.searchParams);
+  
+  console.log('=== URL Parameters ===');
+  console.log(params);
+  console.log('======================');
+  
+  return NextResponse.json({
+    message: 'URL Parameters received',
+    parameters: params,
+    url: url.toString(),
+  });
+}
+
 export async function POST(req: Request) {
+  console.log('===================================');
+  console.log('🔵 POST /api/token called');
+  console.log('===================================');
+  
   if (process.env.NODE_ENV !== 'development') {
     throw new Error(
       'THIS API ROUTE IS INSECURE. DO NOT USE THIS ROUTE IN PRODUCTION WITHOUT AN AUTHENTICATION LAYER.'
@@ -25,6 +46,13 @@ export async function POST(req: Request) {
   }
 
   try {
+    // Extract and log URL parameters
+    const url = new URL(req.url);
+    const params = Object.fromEntries(url.searchParams);
+    console.log('=== URL Parameters ===');
+    console.log(params);
+    console.log('======================');
+
     if (LIVEKIT_URL === undefined) {
       throw new Error('LIVEKIT_URL is not defined');
     }
@@ -38,26 +66,39 @@ export async function POST(req: Request) {
     // Parse room config from request body.
     const body = await req.json();
     // Recreate the RoomConfiguration object from JSON object.
-    const roomConfig = RoomConfiguration.fromJson(body?.room_config, { ignoreUnknownFields: true });
+    const roomConfig = body?.room_config 
+      ? RoomConfiguration.fromJson(body.room_config, { ignoreUnknownFields: true })
+      : undefined;
 
     // Generate participant token
-    const participantName = 'user';
+    const participantName = params.agent_name || 'user';
     const participantIdentity = `voice_assistant_user_${Math.floor(Math.random() * 10_000)}`;
     const roomName = `voice_assistant_room_${Math.floor(Math.random() * 10_000)}`;
 
+    console.log('=== Data being sent to LiveKit Agent ===');
+    console.log('Participant Metadata:', params);
+    console.log('Token Attributes:', params);
+    console.log('========================================');
+
     const participantToken = await createParticipantToken(
-      { identity: participantIdentity, name: participantName },
+      { identity: participantIdentity, name: participantName, metadata: JSON.stringify(params) },
       roomName,
-      roomConfig
+      roomConfig,
+      params as Record<string, string> // Pass URL params as token attributes for agent access
     );
 
-    // Return connection details
+    // Return connection details with URL parameters
     const data: ConnectionDetails = {
       serverUrl: LIVEKIT_URL,
       roomName,
       participantName,
       participantToken,
+      metadata: params,
     };
+    
+    console.log('=== Response Data ===');
+    console.log(data);
+    console.log('=====================');
     const headers = new Headers({
       'Cache-Control': 'no-store',
     });
@@ -73,7 +114,8 @@ export async function POST(req: Request) {
 function createParticipantToken(
   userInfo: AccessTokenOptions,
   roomName: string,
-  roomConfig: RoomConfiguration
+  roomConfig?: RoomConfiguration,
+  attributes?: Record<string, string>
 ): Promise<string> {
   const at = new AccessToken(API_KEY, API_SECRET, {
     ...userInfo,
@@ -87,6 +129,11 @@ function createParticipantToken(
     canSubscribe: true,
   };
   at.addGrant(grant);
+
+  // Add custom attributes that the agent can access
+  if (attributes) {
+    at.attributes = attributes;
+  }
 
   if (roomConfig) {
     at.roomConfig = roomConfig;

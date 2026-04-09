@@ -1,22 +1,5 @@
+import { ArrowRight, BarChart3, Building2, CheckSquare, MessageSquareMore } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-function WelcomeImage() {
-  return (
-    <svg
-      width="64"
-      height="64"
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="text-fg0 mb-4 size-16"
-    >
-      <path
-        d="M15 24V40C15 40.7957 14.6839 41.5587 14.1213 42.1213C13.5587 42.6839 12.7956 43 12 43C11.2044 43 10.4413 42.6839 9.87868 42.1213C9.31607 41.5587 9 40.7957 9 40V24C9 23.2044 9.31607 22.4413 9.87868 21.8787C10.4413 21.3161 11.2044 21 12 21C12.7956 21 13.5587 21.3161 14.1213 21.8787C14.6839 22.4413 15 23.2044 15 24ZM22 5C21.2044 5 20.4413 5.31607 19.8787 5.87868C19.3161 6.44129 19 7.20435 19 8V56C19 56.7957 19.3161 57.5587 19.8787 58.1213C20.4413 58.6839 21.2044 59 22 59C22.7956 59 23.5587 58.6839 24.1213 58.1213C24.6839 57.5587 25 56.7957 25 56V8C25 7.20435 24.6839 6.44129 24.1213 5.87868C23.5587 5.31607 22.7956 5 22 5ZM32 13C31.2044 13 30.4413 13.3161 29.8787 13.8787C29.3161 14.4413 29 15.2044 29 16V48C29 48.7957 29.3161 49.5587 29.8787 50.1213C30.4413 50.6839 31.2044 51 32 51C32.7956 51 33.5587 50.6839 34.1213 50.1213C34.6839 49.5587 35 48.7957 35 48V16C35 15.2044 34.6839 14.4413 34.1213 13.8787C33.5587 13.3161 32.7956 13 32 13ZM42 21C41.2043 21 40.4413 21.3161 39.8787 21.8787C39.3161 22.4413 39 23.2044 39 24V40C39 40.7957 39.3161 41.5587 39.8787 42.1213C40.4413 42.6839 41.2043 43 42 43C42.7957 43 43.5587 42.6839 44.1213 42.1213C44.6839 41.5587 45 40.7957 45 40V24C45 23.2044 44.6839 22.4413 44.1213 21.8787C43.5587 21.3161 42.7957 21 42 21ZM52 17C51.2043 17 50.4413 17.3161 49.8787 17.8787C49.3161 18.4413 49 19.2044 49 20V44C49 44.7957 49.3161 45.5587 49.8787 46.1213C50.4413 46.6839 51.2043 47 52 47C52.7957 47 53.5587 46.6839 54.1213 46.1213C54.6839 45.5587 55 44.7957 55 44V20C55 19.2044 54.6839 18.4413 54.1213 17.8787C53.5587 17.3161 52.7957 17 52 17Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
 
 interface WelcomeViewProps {
   startButtonText: string;
@@ -28,37 +11,83 @@ export const WelcomeView = ({
   onStartCall,
   ref,
 }: React.ComponentProps<'div'> & WelcomeViewProps) => {
+  const features = [
+    {
+      icon: MessageSquareMore,
+      title: 'AI Property Advisor',
+      description: 'Ask questions naturally and get fast guidance for renting or buying.',
+    },
+    {
+      icon: CheckSquare,
+      title: 'Smart Checklists',
+      description: 'Keep track of the practical details that matter before you commit.',
+    },
+    {
+      icon: BarChart3,
+      title: 'Property Comparisons',
+      description: 'Compare options with a calmer, more structured decision flow.',
+    },
+    {
+      icon: Building2,
+      title: 'Rent vs Buy',
+      description: 'Use the assistant to think through tradeoffs with confidence.',
+    },
+  ];
+
   return (
-    <div ref={ref}>
-      <section className="bg-background flex flex-col items-center justify-center text-center">
-        <WelcomeImage />
+    <div ref={ref} className="min-h-svh px-4 py-6 md:px-6 md:py-8">
+      <div className="mx-auto flex min-h-[calc(100svh-3rem)] w-full max-w-6xl flex-col gap-8">
+        <section className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(135deg,#5f52f6_0%,#4338ca_45%,#35289f_100%)] px-6 py-16 text-center text-white shadow-[0_30px_100px_rgba(79,70,229,0.35)] md:px-12 md:py-24">
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.55),rgba(255,255,255,0)_70%)] blur-2xl" />
+          <div className="relative mx-auto max-w-3xl">
+            <span className="mb-5 inline-flex rounded-full border border-white/20 bg-white/12 px-4 py-1 text-xs font-semibold tracking-[0.24em] uppercase text-white/80">
+              Property Advisor
+            </span>
+            <h1 className="text-4xl leading-none font-semibold tracking-tight text-balance md:text-6xl">
+              Your AI-Powered
+              <span className="mt-2 block text-[#96f0c3]">UK Property Advisor</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/82 md:text-lg">
+              Whether you&apos;re renting your first flat or weighing up a home purchase, chat
+              with your assistant and get clearer next steps without leaving the page.
+            </p>
+            <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Button
+                size="lg"
+                onClick={onStartCall}
+                className="h-12 min-w-52 rounded-xl bg-white px-6 text-sm font-semibold text-[#4438ca] hover:bg-white/92"
+              >
+                {startButtonText}
+              </Button>
+              <Button
+                size="lg"
+                variant="secondary"
+                onClick={onStartCall}
+                className="h-12 min-w-52 rounded-xl border border-white/10 bg-white/12 px-6 text-sm font-semibold text-white hover:bg-white/18"
+              >
+                Continue With Chat
+              </Button>
+            </div>
+            <p className="mt-6 inline-flex items-center gap-2 text-sm text-white/70">
+              Ask AI to help decide <ArrowRight className="size-4" />
+            </p>
+          </div>
+        </section>
 
-        <p className="text-foreground max-w-prose pt-1 leading-6 font-medium">
-          Chat live with your voice AI agent
-        </p>
-
-        <Button
-          size="lg"
-          onClick={onStartCall}
-          className="mt-6 w-64 rounded-full font-mono text-xs font-bold tracking-wider uppercase"
-        >
-          {startButtonText}
-        </Button>
-      </section>
-
-      <div className="fixed bottom-5 left-0 flex w-full items-center justify-center">
-        <p className="text-muted-foreground max-w-prose pt-1 text-xs leading-5 font-normal text-pretty md:text-sm">
-          Need help getting set up? Check out the{' '}
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://docs.livekit.io/agents/start/voice-ai/"
-            className="underline"
-          >
-            Voice AI quickstart
-          </a>
-          .
-        </p>
+        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {features.map(({ icon: Icon, title, description }) => (
+            <article
+              key={title}
+              className="rounded-[1.5rem] border border-white/70 bg-white/90 p-6 shadow-[0_10px_35px_rgba(76,61,176,0.08)] backdrop-blur"
+            >
+              <div className="mb-4 flex size-11 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,rgba(95,82,246,0.14),rgba(150,240,195,0.22))] text-[#4f46e5]">
+                <Icon className="size-5" />
+              </div>
+              <h2 className="text-lg font-semibold text-[#241b55]">{title}</h2>
+              <p className="mt-2 text-sm leading-6 text-[#665f85]">{description}</p>
+            </article>
+          ))}
+        </section>
       </div>
     </div>
   );

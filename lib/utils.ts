@@ -93,9 +93,13 @@ export function getStyles(appConfig: AppConfig) {
 /**
  * Get a token source for a sandboxed LiveKit session
  * @param appConfig - The app configuration
+ * @param urlParams - Optional URL parameters to pass to agent
  * @returns A token source for a sandboxed LiveKit session
  */
-export function getSandboxTokenSource(appConfig: AppConfig) {
+export function getSandboxTokenSource(
+  appConfig: AppConfig,
+  urlParams?: { [key: string]: string | string[] | undefined }
+) {
   return TokenSource.custom(async () => {
     const url = new URL(process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT!, window.location.origin);
     const sandboxId = appConfig.sandboxId ?? '';
@@ -104,6 +108,10 @@ export function getSandboxTokenSource(appConfig: AppConfig) {
           agents: [{ agent_name: appConfig.agentName }],
         }
       : undefined;
+
+    console.log('=== Sandbox Token Request ===');
+    console.log('URL Params being sent:', urlParams);
+    console.log('=============================');
 
     try {
       const res = await fetch(url.toString(), {
@@ -114,6 +122,8 @@ export function getSandboxTokenSource(appConfig: AppConfig) {
         },
         body: JSON.stringify({
           room_config: roomConfig,
+          metadata: urlParams, // Pass URL params as metadata
+          attributes: urlParams, // Pass URL params as attributes for agent access
         }),
       });
       return await res.json();

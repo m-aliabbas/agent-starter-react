@@ -17,7 +17,7 @@ export type MessageProps = HTMLAttributes<HTMLDivElement> & {
 export const Message = ({ className, from, ...props }: MessageProps) => (
   <div
     className={cn(
-      'group flex w-full max-w-[95%] flex-col gap-2',
+      'group flex w-full max-w-[84%] flex-col gap-2',
       from === 'user' ? 'is-user ml-auto justify-end' : 'is-assistant',
       className
     )}
@@ -31,8 +31,8 @@ export const MessageContent = ({ children, className, ...props }: MessageContent
   <div
     className={cn(
       'is-user:dark flex w-fit max-w-full min-w-0 flex-col gap-2 overflow-hidden text-sm',
-      'group-[.is-user]:bg-secondary group-[.is-user]:text-foreground group-[.is-user]:ml-auto group-[.is-user]:rounded-lg group-[.is-user]:px-4 group-[.is-user]:py-3',
-      'group-[.is-assistant]:text-foreground',
+      'group-[.is-user]:ml-auto group-[.is-user]:rounded-[1.25rem] group-[.is-user]:border group-[.is-user]:border-[#d9dcff] group-[.is-user]:bg-[linear-gradient(135deg,#eef0ff_0%,#e4e7ff_100%)] group-[.is-user]:px-4 group-[.is-user]:py-3 group-[.is-user]:text-[#312a67] group-[.is-user]:shadow-[0_10px_30px_rgba(95,82,246,0.10)]',
+      'group-[.is-assistant]:rounded-[1.25rem] group-[.is-assistant]:border group-[.is-assistant]:border-[#ece9ff] group-[.is-assistant]:bg-white group-[.is-assistant]:px-4 group-[.is-assistant]:py-3 group-[.is-assistant]:text-[#2e265f] group-[.is-assistant]:shadow-[0_10px_30px_rgba(76,61,176,0.06)]',
       className
     )}
     {...props}
