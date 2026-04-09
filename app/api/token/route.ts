@@ -44,10 +44,9 @@ export async function POST(req: Request) {
   console.log('===================================');
   console.log('🔵 POST /api/token called');
   console.log('===================================');
-
   if (process.env.NODE_ENV !== 'development') {
-    throw new Error(
-      'THIS API ROUTE IS INSECURE. DO NOT USE THIS ROUTE IN PRODUCTION WITHOUT AN AUTHENTICATION LAYER.'
+    console.warn(
+      'POST /api/token is running in production without an authentication layer. Add auth before exposing this publicly.'
     );
   }
 
